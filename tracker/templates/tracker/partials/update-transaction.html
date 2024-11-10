@@ -1,0 +1,15 @@
+{% load widget_tweaks %}
+<div>
+    <h1 class="mt-4 mb-6 text-2xl leading-none tracking-tight text-white md:text-3xl lg:text-4xl">Update Transaction</h1>
+    <form hx-post="{% url 'update-transaction' transaction.pk %}"
+          class="flex justify-center flex-col rounded-box bg-[#10627a] p-8">
+        {% include "tracker/partials/transaction-form.html" %}
+        <div class="flex gap-3">
+            <button class="btn btn-success w-1/5">Update</button>
+            <button class="btn btn-neutral w-1/5"
+                    hx-get="{% url 'transactions' %}"
+                    hx-target="#transaction-block"
+                    hx-push-url="/transactions">Cancel</button>
+        </div>
+    </form>
+</div

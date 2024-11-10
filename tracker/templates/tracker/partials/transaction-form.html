@@ -1,0 +1,18 @@
+{% load widget_tweaks %}
+<div class="mb-2 form-control">
+    {{ form.transaction_type|add_label_class:"label text-white mb-2" }}
+    {% render_field form.transaction_type class="input" %}
+</div>
+<div class="mb-2 form-control">
+    {{ form.amount|add_label_class:"label text-white mb-2" }}
+    {% render_field form.amount class="input" %}
+    {% for error in form.amount.errors %}<p class="text-red-400 mt-1">{{ error }}</p>{% endfor %}
+</div>
+<div class="mb-2 form-control">
+    {{ form.date|add_label_class:"label text-white mb-2" }}
+    {% render_field form.date class="input" %}
+</div>
+<div class="mb-2 form-control">
+    {{ form.category|add_label_class:"label text-white mb-2" }}
+    {% render_field form.category class="ml-3 text-white checked:bg-green-500 border-gray-300 rounded focus:ring-green-500" %}
+</div>

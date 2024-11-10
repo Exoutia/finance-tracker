@@ -1,0 +1,70 @@
+{% load humanize %}
+{% load partials %}
+{% load widget_tweaks %}
+<div id="charts-container" class="relative overflow-x-auto text-white">
+    {% if filter.qs %}
+        <div class="grid grid-cols-4 gap-10">
+            <div class="col-span-3 text-white text-center">
+                Income Expense Bar
+                {{ income_expense_bar|safe }}
+                <div class="grid grid-cols-2 mt-3 gap-3">
+                    <div>
+                        <h2>Income Pie Chart</h2>
+                        {{ income_pie_chart|safe }}
+                    </div>
+                    <div>
+                        <h2>Expense Pie Chart</h2>
+                        {{ expense_pie_chart|safe }}
+                    </div>
+                </div>
+            </div>
+            <form class="col-span-1"
+                  hx-get="{% url 'transaction-charts' %}"
+                  hx-target="#charts-container"
+                  hx-swap="outerHTML"
+                  hx-indicator="#spinner"
+                  id="filter-form">
+                <div class="mb-3 form-control">
+                    {{ filter.form.transaction_type|add_label_class:"label text-white" }}
+                    {% render_field filter.form.transaction_type class="select bg-gray-50 text-gray-900" %}
+                </div>
+                <div class="mb-3 form-control">
+                    {{ filter.form.start_date|add_label_class:"label text-white" }}
+                    {% render_field filter.form.start_date class="input bg-gray-50 text-gray-900" %}
+                </div>
+                <div class="mb-3 form-control">
+                    {{ filter.form.end_date|add_label_class:"label text-white" }}
+                    {% render_field filter.form.end_date class="input bg-gray-50 text-gray-900" %}
+                </div>
+                <div class="mb-4 form-control">
+                    {% render_field filter.form.category_type class="text-green-500 border-gray-300 rounded focus:ring-green-500" %}
+                </div>
+                <div class="flex flex-col justify-center">
+                    <button class="btn btn-success">Filter</button>
+                    <span id="spinner"
+                          class="mt-3 loading loading-dots loading-md htmx-indicator"></span>
+                </div>
+            </form>
+        </div>
+    {% else %}
+        <div class="no-transaction-found-block">
+            <h2 class="text-white">No charts found</h2>
+            <div class="border-dashed flex items-center py-6 rounded-md">
+                <a hx-get="{% url 'create-transaction' %}"
+                   hx-push-url="true"
+                   hx-target="#charts-block"
+                   class="cursor-pointer flex gap-3 items-center px-2 rounded-md hover:bg-green-500">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke-width="1"
+                         stroke="currentColor"
+                         class="size-9">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                    <span class="prose-2xl">Create Transactions</span>
+                </a>
+            </div>
+        </div>
+    {% endif %}
+</div>
